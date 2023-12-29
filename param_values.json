@@ -11,5 +11,13 @@
     "location": {
       "value": "centralindia"
     }
+    "adminpassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/6b574372-eb4e-498f-97c9-483fe45f26b5/resourceGroups/app-grp/providers/Microsoft.KeyVault/vaults/appsecret329201"
+        },
+        "secretName": "adminpassword"
+      }
+    }
   }
 }
