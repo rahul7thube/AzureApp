@@ -1,0 +1,272 @@
+/*
+Template does 
+    i. Create Ubuntu VM
+   ii. Install apache2 service
+  iii. Start apache2 service
+
+Prerequisites to run this script:
+1. Access to create below resources on Azure.
+        Storage Account
+        Public IP Address
+        Network Security Groups
+        Virtual Network
+        Subnet
+        Network Interface
+        Virtual Machine
+2. Existing resource group in Azure
+
+Sample Execution:
+PS C:\Users\ws_htu374> New-AzResourceGroupDeployment -Name myfirsttemplate -ResourceGroupName app-grp -TemplateFile template.json -vmsize Standard_D1_v2 -adminuser azure -location centralindia
+
+cmdlet New-AzResourceGroupDeployment at command pipeline position 1
+Supply values for the following parameters:
+(Type !? for Help.)
+adminpassword: *********
+
+
+DeploymentName          : myfirsttemplate
+ResourceGroupName       : app-grp
+ProvisioningState       : Succeeded
+Timestamp               : 29-12-2023 11:57:01
+Mode                    : Incremental
+TemplateLink            :
+Parameters              :
+                          Name             Type                       Value
+                          ===============  =========================  ==========
+                          vmsize           String                     "Standard_D1_v2"
+                          adminuser        String                     "azure"
+                          adminpassword    SecureString               null
+                          location         String                     "centralindia"
+
+Outputs                 :
+                          Name              Type                       Value
+                          ================  =========================  ==========
+                          application-IP    String                     "20.204.183.3"
+
+DeploymentDebugLogLevel :
+
+
+
+PS C:\Users\ws_htu374>
+*/
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vmsize": {
+            "type": "string",
+            "metadata": {
+                "description": "Size of the Virtual Machine to Provision"
+            }
+        },
+        "adminuser": {
+            "type": "string",
+            "metadata": {
+                "description": "Admin user name"
+            }
+        },
+        "adminpassword": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Should be between 6-72 characters long and a combination of Upper case, lower case, numbers and special chars."
+            }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "Location"
+            }
+        }
+    },
+    "functions": [],
+    "variables": {},
+    "resources": [
+        {
+            "name": "[toLower('appstorage39202191')]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2023-01-01",
+            "location": "[parameters('location')]",
+            "sku": {
+                "name": "Standard_LRS"
+            },
+            "kind": "Storage"
+        },
+        {
+            "name": "application-IP",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "apiVersion": "2023-04-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "publicIPAllocationMethod": "Static"
+            }
+        },
+        {
+            "name": "app-nsg",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "apiVersion": "2023-04-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "securityRules": [
+                    {
+                        "name": "allow_HTTP",
+                        "properties": {
+                            "description": "Allow HTTP Access",
+                            "protocol": "Tcp",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "80",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 100,
+                            "direction": "Inbound"
+                        }
+                    },
+                    {
+                        "name": "allow_SSH",
+                        "properties": {
+                            "description": "Allow SSH Access",
+                            "protocol": "Tcp",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "22",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 101,
+                            "direction": "Inbound"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "app-vn",
+            "type": "Microsoft.Network/virtualNetworks",
+            "apiVersion": "2023-04-01",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups', 'app-nsg')]"
+            ],
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "10.0.0.0/16"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "app-subnet1",
+                        "properties": {
+                            "addressPrefix": "10.0.0.0/24",
+                            "networkSecurityGroup": {
+                                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', 'app-nsg')]"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "app-nic",
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2023-04-01",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', 'application-IP')]",
+                "[resourceId('Microsoft.Network/virtualNetworks', 'app-vn')]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipConfig1",
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'application-IP')]"
+                            },
+                            "subnet": {
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'app-vn', 'app-subnet1')]"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "app",
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2023-03-01",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkInterfaces', 'app-nic')]"
+            ],
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "[parameters('vmsize')]"
+                },
+                "osProfile": {
+                    "computerName": "app",
+                    "adminUsername": "[parameters('adminuser')]",
+                    "adminPassword": "[parameters('adminpassword')]"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "Canonical",
+                        "offer": "UbuntuServer",
+                        "sku": "16.04-LTS",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "name": "app-OSDisk39202191",
+                        "caching": "ReadWrite",
+                        "createOption": "FromImage"
+                    }
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', 'app-nic')]"
+                        }
+                    ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": true,
+                        "storageUri": "[reference(resourceId('Microsoft.Storage/storageAccounts/', toLower('appstorage39202191'))).primaryEndpoints.blob]"
+                    }
+                }
+            }
+        },
+        {
+            "name": "app/customScript1",
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "apiVersion": "2023-03-01",
+            "location": "[parameters('location')]",
+            "tags": {
+                "displayName": "customScript1 for Linux VM"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/virtualMachines', 'app')]"
+            ],
+            "properties": {
+                "publisher": "Microsoft.Azure.Extensions",
+                "type": "CustomScript",
+                "typeHandlerVersion": "2.1",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "fileUris": [
+                        "https://github.com/gopi-s-ht/EchoApplication/raw/main/web_server_init.sh"
+                    ]
+                },
+                "protectedSettings": {
+                    "commandToExecute": "sh web_server_init.sh"
+                }
+            }
+        }
+    ],
+    "outputs": {
+        "application-IP": {
+            "type": "string",
+            "value": "[reference('application-IP').ipAddress]"
+        }
+    }
+}
