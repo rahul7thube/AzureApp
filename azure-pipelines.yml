@@ -22,3 +22,4 @@ steps:
     csmFileLink: 'https://github.com/gopi-s-ht/EchoApplication/raw/main/template.json'
     deploymentMode: 'Incremental'
     csmParametersFileLink: 'https://github.com/gopi-s-ht/EchoApplication/raw/main/param_values.json'
+    addSpnToEnvironment: true
