@@ -16,7 +16,7 @@ steps:
     azureResourceManagerConnection: 'sc_for_echo_app_pipeline'
     subscriptionId: '6b574372-eb4e-498f-97c9-483fe45f26b5'
     action: 'Create Or Update Resource Group'
-    resourceGroupName: 'app-grp'
+    resourceGroupName: 'appgrp'
     location: 'Central India'
     templateLocation: 'URL of the file'
     csmFileLink: 'https://github.com/gopi-s-ht/EchoApplication/raw/main/template.json'
