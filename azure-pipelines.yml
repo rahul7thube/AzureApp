@@ -13,13 +13,12 @@ steps:
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:
     deploymentScope: 'Resource Group'
-    azureResourceManagerConnection: 'Free Trial(6b574372-eb4e-498f-97c9-483fe45f26b5)'
+    azureResourceManagerConnection: 'echo-app-pipeline'
     subscriptionId: '6b574372-eb4e-498f-97c9-483fe45f26b5'
     action: 'Create Or Update Resource Group'
     resourceGroupName: 'app-grp'
     location: 'Central India'
     templateLocation: 'URL of the file'
     csmFileLink: 'https://github.com/gopi-s-ht/EchoApplication/raw/main/template.json'
-    deploymentMode: 'Incremental'
     csmParametersFileLink: 'https://github.com/gopi-s-ht/EchoApplication/raw/main/param_values.json'
-    addSpnToEnvironment: true
+    deploymentMode: 'Incremental'
