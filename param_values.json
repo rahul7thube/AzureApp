@@ -10,7 +10,7 @@
     },
     "location": {
       "value": "centralindia"
-    },
+    } /*,
     "adminpassword": {
       "reference": {
         "keyVault": {
@@ -18,6 +18,6 @@
         },
         "secretName": "adminpassword"
       }
-    }
+    } */
   }
 }
