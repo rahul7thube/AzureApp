@@ -13,13 +13,13 @@
             "metadata": {
                 "description": "Admin user name"
             }
-        } /*,
+        },
         "adminpassword": {
             "type": "securestring",
             "metadata": {
                 "description": "Should be between 6-72 characters long and a combination of Upper case, lower case, numbers and special chars."
             }
-        } */,
+        },
         "location": {
             "type": "string",
             "metadata": {
@@ -155,7 +155,7 @@
                 "osProfile": {
                     "computerName": "app",
                     "adminUsername": "[parameters('adminuser')]",
-                    "adminPassword": "Pune@2023"
+                    "adminPassword": "[parameters('adminpassword')]"
                 },
                 "storageProfile": {
                     "imageReference": {
