@@ -19,6 +19,6 @@ steps:
     resourceGroupName: 'appgrp'
     location: 'Central India'
     templateLocation: 'URL of the file'
-    csmFileLink: 'https://github.com/gopi-s-ht/EchoApplication/raw/main/template_v2.json'
+    csmFileLink: 'https://github.com/gopi-s-ht/EchoApplication/raw/main/template.json'
     csmParametersFileLink: 'https://github.com/gopi-s-ht/EchoApplication/raw/main/param_values.json'
     deploymentMode: 'Incremental'
