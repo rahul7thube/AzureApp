@@ -16,7 +16,7 @@ steps:
     azureResourceManagerConnection: 'sc_for_echo_app_pipeline'
     subscriptionId: '266adbeb-3ea4-4c96-9786-39e27c468655'
     action: 'Create Or Update Resource Group'
-    resourceGroupName: 'appgrp'
+    resourceGroupName: 'MarketPlace-demo'
     location: 'Central India'
     templateLocation: 'URL of the file'
     csmFileLink: 'https://github.com/rahul7thube/AzureApp/blob/main/template.json'
