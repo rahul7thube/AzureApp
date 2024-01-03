@@ -19,6 +19,6 @@ steps:
     resourceGroupName: 'HT-Resource-Grp'
     location: 'Central India'
     templateLocation: 'URL of the file'
-    csmFileLink: 'https://github.com/rahul7thube/AzureApp/blob/main/template.json'
-    csmParametersFileLink: 'https://github.com/rahul7thube/AzureApp/blob/main/param_values.json'
+    csmFileLink: 'https://github.com/rahul7thube/AzureApp/raw/main/template.json'
+    csmParametersFileLink: 'https://github.com/rahul7thube/AzureApp/raw/main/param_values.json'
     deploymentMode: 'Incremental'
