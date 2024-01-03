@@ -10,13 +10,14 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
+  - 
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:
     deploymentScope: 'Resource Group'
-    azureResourceManagerConnection: 'sc_for_echo_app_pipeline'
+    azureResourceManagerConnection: 'ht-devops-service-conn'
     subscriptionId: '266adbeb-3ea4-4c96-9786-39e27c468655'
     action: 'Create Or Update Resource Group'
-    resourceGroupName: 'MarketPlace-demo'
+    resourceGroupName: 'HT-Resource-Grp'
     location: 'Central India'
     templateLocation: 'URL of the file'
     csmFileLink: 'https://github.com/rahul7thube/AzureApp/blob/main/template.json'
