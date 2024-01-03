@@ -155,7 +155,7 @@
                 "osProfile": {
                     "computerName": "app",
                     "adminUsername": "[parameters('adminuser')]",
-                    "adminPassword": "[parameters('adminpassword')]"
+                    "adminPassword": "adminpass@123"
                 },
                 "storageProfile": {
                     "imageReference": {
