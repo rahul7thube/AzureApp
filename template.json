@@ -82,7 +82,7 @@ PS C:\Users\ws_htu374>
     "variables": {},
     "resources": [
         {
-            "name": "[toLower('appstorage39202191')]",
+            "name": "[toLower('appstorage39202192')]",
             "type": "Microsoft.Storage/storageAccounts",
             "apiVersion": "2023-01-01",
             "location": "[parameters('location')]",
@@ -245,7 +245,7 @@ PS C:\Users\ws_htu374>
                 "diagnosticsProfile": {
                     "bootDiagnostics": {
                         "enabled": true,
-                        "storageUri": "[reference(resourceId('Microsoft.Storage/storageAccounts/', toLower('appstorage39202191'))).primaryEndpoints.blob]"
+                        "storageUri": "[reference(resourceId('Microsoft.Storage/storageAccounts/', toLower('appstorage39202192'))).primaryEndpoints.blob]"
                     }
                 }
             }
