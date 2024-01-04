@@ -1,0 +1,24 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu14.04-ansible
+
+steps:
+- task: AzureResourceManagerTemplateDeployment@3
+  inputs:
+    deploymentScope: 'Resource Group'
+    azureResourceManagerConnection: 'ht-devops-service-conn'
+    subscriptionId: '266adbeb-3ea4-4c96-9786-39e27c468655'
+    action: 'Create Or Update Resource Group'
+    resourceGroupName: 'HT-Resource-Grp'
+    location: 'Central India'
+    templateLocation: 'URL of the file'
+    csmFileLink: 'https://github.com/rahul7thube/AzureApp/raw/main/template.bicep'
+    csmParametersFileLink: 'https://github.com/rahul7thube/AzureApp/raw/main/param_values.json'
+    deploymentMode: 'Incremental'
