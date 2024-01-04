@@ -7,7 +7,7 @@ trigger:
 - main
 
 pool:
-  vmImage: ubuntu14.04-ansible
+  vmImage: ubuntu-latest
 
 steps:
 - task: AzureResourceManagerTemplateDeployment@3
