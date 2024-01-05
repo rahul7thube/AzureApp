@@ -169,7 +169,7 @@ resource app 'Microsoft.Compute/virtualMachines@2023-03-01' = {
   }
 }
 
-resource app_customScript1 'Microsoft.Compute/virtualMachines/extensions@2023-03-01' = {
+/*resource app_customScript1 'Microsoft.Compute/virtualMachines/extensions@2023-03-01' = {
   parent: app
   name: 'customScript1'
   location: location
@@ -190,6 +190,6 @@ resource app_customScript1 'Microsoft.Compute/virtualMachines/extensions@2023-03
       commandToExecute: 'sh web_server_init.sh'
     }
   }
-}
+}*/
 
 output application_IP string = application_IP.properties.ipAddress
