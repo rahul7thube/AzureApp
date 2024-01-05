@@ -1,3 +1,4 @@
+metadata description = 'File to deploy web application'
 @description('Size of the Virtual Machine to Provision')
 param vmsize string
 
