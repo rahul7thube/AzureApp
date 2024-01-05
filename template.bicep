@@ -168,6 +168,24 @@ resource app 'Microsoft.Compute/virtualMachines@2023-03-01' = {
     }
   }
 }
+resource appExtension 'Microsoft.Compute/virtualMachines/extensions@2021-04-01' = {
+  parent: app
+  name: 'customScript1'
+  location: location
+  tags: {
+    displayName: 'customScript1 for Linux VM'
+  }
+  properties: {
+    publisher: 'Microsoft.Azure.Extensions'
+    type: 'CustomScript'
+    typeHandlerVersion: '2.0'
+    settings: {
+      // Assuming the script is hosted publicly
+      fileUris: ['https://github.com/rahul7thube/AzureApp/raw/main/ansible-playbooks/install-playbook.sh']
+      commandToExecute: 'bash install-playbook.sh'
+    }
+  }
+}
 
 /*resource app_customScript1 'Microsoft.Compute/virtualMachines/extensions@2023-03-01' = {
   parent: app
