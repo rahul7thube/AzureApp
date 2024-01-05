@@ -14,9 +14,9 @@ sudo apt-get install ansible -y
 
 # Download the Ansible playbook
 # Replace the URL with the location of your Ansible playbook
-wget https://example.com/my_ansible_playbook.yml
+wget https://github.com/rahul7thube/AzureApp/raw/main/ansible-playbooks/configure-webserver.yml
 
 # Run the Ansible playbook
-ansible-playbook my_ansible_playbook.yml
+ansible-playbook configure-webserver.yml
 
 # Optional: Add any additional commands or scripts here
