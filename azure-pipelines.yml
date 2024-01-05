@@ -9,10 +9,6 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-variables:
-  ansiblePlaybookPath: 'ansible-playbooks'
-  ansibleInventoryPath: '$(System.DefaultWorkingDirectory)/ansible_inventory.ini'
-  
 steps:
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:
@@ -26,22 +22,3 @@ steps:
     csmFile: 'template.bicep'
     csmParametersFile: 'param_values.json'
     deploymentMode: 'Incremental'
-    outputVariable: 'vmPublicIpAddress'
-    
-- script: |
-     publicIp=$(az network public-ip show --resource-group YourResourceGroup --name YourPublicIpName --query ipAddress -o tsv)
-     echo "VM Public IP Address: $(publicIp)"
-  displayName: 'Print VM Public IP Address'
-  
-- script: |
-    echo "[web_servers]" > $(ansibleInventoryPath)
-    echo "web_server ansible_host=$(hostname -i)" >> $(ansibleInventoryPath)
-  displayName: 'Create Ansible Inventory File'
-
-- script: |
-    sudo apt update
-    sudo apt install ansible -y
-    ansible-playbook -i $(ansibleInventoryPath) $(System.DefaultWorkingDirectory)/$(ansiblePlaybookPath)/configure-webserver.yml
-  displayName: 'Run Ansible Playbook to Configure Apache2'
-  env:
-    ANSIBLE_HOST_KEY_CHECKING: 'False'
