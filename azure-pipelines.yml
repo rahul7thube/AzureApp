@@ -22,9 +22,9 @@ steps:
     action: 'Create Or Update Resource Group'
     resourceGroupName: 'HT-Resource-Grp'
     location: 'Central India'
-    templateLocation: 'URL of the file'
-    csmFileLink: 'https://github.com/rahul7thube/AzureApp/raw/main/template.bicep'
-    csmParametersFileLink: 'https://github.com/rahul7thube/AzureApp/raw/main/param_values.json'
+    templateLocation: 'Linked artifact'
+    csmFile: 'template.bicep'
+    csmParametersFile: 'param_values.json'
     deploymentMode: 'Incremental'
     outputVariable: 'vmPublicIpAddress'
     
