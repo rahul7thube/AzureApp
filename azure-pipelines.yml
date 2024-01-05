@@ -29,7 +29,8 @@ steps:
     outputVariable: 'vmPublicIpAddress'
     
 - script: |
-    echo "VM Public IP Address: $(application_IP)"
+     publicIp=$(az network public-ip show --resource-group YourResourceGroup --name YourPublicIpName --query ipAddress -o tsv)
+     echo "VM Public IP Address: $(publicIp)"
   displayName: 'Print VM Public IP Address'
   
 - script: |
