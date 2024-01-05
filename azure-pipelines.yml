@@ -29,6 +29,10 @@ steps:
     outputVariable: 'vmPublicIpAddress'
     
 - script: |
+    echo "VM Public IP Address: $(vmPublicIpAddress)"
+  displayName: 'Print VM Public IP Address'
+  
+- script: |
     echo "[web_servers]" > $(ansibleInventoryPath)
     echo "web_server ansible_host=$(vmPublicIpAddress)" >> $(ansibleInventoryPath)
   displayName: 'Create Ansible Inventory File'
