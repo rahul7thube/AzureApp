@@ -11,6 +11,9 @@ sudo add-apt-repository --yes --update ppa:ansible/ansible
 
 # Install Ansible
 sudo apt-get install ansible -y
+
+dpkg -L ansible
+
 # Configure inventory file
 echo "[webservers]" > inventory
 IP=$(curl -s ifconfig.me)
@@ -23,6 +26,6 @@ echo IP ADDRESS ID $IP
 wget https://github.com/rahul7thube/AzureApp/raw/main/ansible-playbooks/configure-webserver.yml
 
 # Run the Ansible playbook
-ansible-playbook -i inventory configure-webserver.yml
+/usr/bin/ansible-playbook -i inventory configure-webserver.yml
 
 # Optional: Add any additional commands or scripts here
