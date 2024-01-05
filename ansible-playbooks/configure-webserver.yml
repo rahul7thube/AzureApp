@@ -1,0 +1,33 @@
+---
+- name: Install and configure Apache
+  hosts: web_servers
+  become: yes
+
+  tasks:
+    - name: Update package repositories
+      apt:
+        update_cache: yes
+
+    - name: Install Apache2
+      apt:
+        name: apache2
+        state: present
+      register: apache_installed
+
+    - name: Start Apache2 service
+      service:
+        name: apache2
+        state: started
+      when: apache_installed.changed
+
+    - name: Create index.html file
+      copy:
+        content: "Hello World!\n"
+        dest: /var/www/html/index.html
+        mode: "0644"
+      notify: Restart Apache
+  handlers:
+    - name: Restart Apache
+      service:
+        name: apache2
+        state: restarted
