@@ -29,7 +29,7 @@ steps:
     outputVariable: 'vmPublicIpAddress'
     
 - script: |
-    echo "VM Public IP Address: $(vmPublicIpAddress)"
+    echo "VM Public IP Address: $(application_IP)"
   displayName: 'Print VM Public IP Address'
   
 - script: |
