@@ -34,7 +34,7 @@ steps:
   
 - script: |
     echo "[web_servers]" > $(ansibleInventoryPath)
-    echo "web_server ansible_host=$(vmPublicIpAddress)" >> $(ansibleInventoryPath)
+    echo "web_server ansible_host=$(hostname -i)" >> $(ansibleInventoryPath)
   displayName: 'Create Ansible Inventory File'
 
 - script: |
