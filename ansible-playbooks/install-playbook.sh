@@ -16,6 +16,8 @@ echo "[webservers]" > inventory
 IP=$(curl -s ifconfig.me)
 echo $IP >> inventory
 
+echo IP ADDRESS ID $IP
+
 # Download the Ansible playbook
 # Replace the URL with the location of your Ansible playbook
 wget https://github.com/rahul7thube/AzureApp/raw/main/ansible-playbooks/configure-webserver.yml
