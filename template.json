@@ -249,32 +249,6 @@ PS C:\Users\ws_htu374>
                     }
                 }
             }
-        },
-        {
-            "name": "app/customScript1",
-            "type": "Microsoft.Compute/virtualMachines/extensions",
-            "apiVersion": "2023-03-01",
-            "location": "[parameters('location')]",
-            "tags": {
-                "displayName": "customScript1 for Linux VM"
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.Compute/virtualMachines', 'app')]"
-            ],
-            "properties": {
-                "publisher": "Microsoft.Azure.Extensions",
-                "type": "CustomScript",
-                "typeHandlerVersion": "2.1",
-                "autoUpgradeMinorVersion": true,
-                "settings": {
-                    "fileUris": [
-                        "https://github.com/gopi-s-ht/EchoApplication/raw/main/web_server_init.sh"
-                    ]
-                },
-                "protectedSettings": {
-                    "commandToExecute": "sh web_server_init.sh"
-                }
-            }
         }
     ],
     "outputs": {
