@@ -16,7 +16,7 @@
         "keyVault": {
           "id": "/subscriptions/266adbeb-3ea4-4c96-9786-39e27c468655/resourceGroups/MarketPlace-demo/providers/Microsoft.KeyVault/vaults/keyvaultRT123"
         },
-        "secretName": "ht-devops-bicept"
+        "secretName": "ht-devops-bicep"
       }
     }
   }
