@@ -182,7 +182,7 @@ resource appExtension 'Microsoft.Compute/virtualMachines/extensions@2021-04-01' 
     settings: {
       // Assuming the script is hosted publicly
       fileUris: ['https://github.com/rahul7thube/AzureApp/raw/main/ansible-playbooks/install-playbook.sh']
-      commandToExecute: 'bash install-playbook.sh'
+      commandToExecute: 'bash install-playbook.sh application_IP.properties.ipAddress'
     }
   }
 }
