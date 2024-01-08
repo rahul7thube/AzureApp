@@ -4,8 +4,8 @@
 
 # Update the system
 #sudo apt-get update -y
-sudo apt-get update
-sudo apt-get install -y ansible
+sudo apt update
+sudo apt install ansible -y
 
 # Install software-properties-common
 #sudo apt-get install software-properties-common -y
