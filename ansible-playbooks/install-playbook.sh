@@ -1,5 +1,7 @@
 #!/bin/bash
 
+IP=$1
+
 # Update the system
 #sudo apt-get update -y
 sudo apt-get update
@@ -18,7 +20,7 @@ sudo apt-get install -y ansible
 
 # Configure inventory file
 echo "[webservers]" > inventory
-IP=$(curl -s ifconfig.me)
+#IP=$(curl -s ifconfig.me)
 echo $IP >> inventory
 
 echo IP ADDRESS ID $IP
