@@ -34,7 +34,7 @@ wget https://github.com/rahul7thube/AzureApp/raw/main/ansible-playbooks/postgres
 
 export PATH=/usr/bin:$PATH
 # Run the Ansible playbook
-ansible-playbook configure-webserver.yml
 ansible-playbook postgresql-ansible.yml
+ansible-playbook configure-webserver.yml
 
 # Optional: Add any additional commands or scripts here
