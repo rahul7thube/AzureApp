@@ -12,8 +12,8 @@ param adminpassword string
 @description('Location')
 param location string
 
-resource appstorage39202192 'Microsoft.Storage/storageAccounts@2023-01-01' = {
-  name: toLower('appstorage39202192')
+resource appstorage39202193 'Microsoft.Storage/storageAccounts@2023-01-01' = {
+  name: toLower('appstorage39202193')
   location: location
   sku: {
     name: 'Standard_LRS'
