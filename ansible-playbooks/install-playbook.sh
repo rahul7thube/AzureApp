@@ -27,10 +27,14 @@ sudo apt install ansible -y
 
 # Download the Ansible playbook
 # Replace the URL with the location of your Ansible playbook
-wget https://github.com/rahul7thube/AzureApp/raw/main/ansible-playbooks/
+wget https://github.com/rahul7thube/AzureApp/raw/main/ansible-playbooks/configure-webserver.yml
+wget https://github.com/rahul7thube/AzureApp/raw/main/ansible-playbooks/index.php
+wget https://github.com/rahul7thube/AzureApp/raw/main/ansible-playbooks/migration.sql
+wget https://github.com/rahul7thube/AzureApp/raw/main/ansible-playbooks/postgresql-ansible.yml
+
 export PATH=/usr/bin:$PATH
 # Run the Ansible playbook
-ansible-playbook ansible-playbooks/configure-webserver.yml
-ansible-playbook ansible-playbooks/postgresql-ansible.yml
+ansible-playbook configure-webserver.yml
+ansible-playbook postgresql-ansible.yml
 
 # Optional: Add any additional commands or scripts here
