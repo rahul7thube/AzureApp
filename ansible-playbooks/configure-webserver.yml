@@ -8,10 +8,15 @@
       apt:
         update_cache: yes
 
-    - name: Install Apache2
+    - name: Install Apache2 and php
       apt:
-        name: apache2
+        name: "{{ item }}"
         state: present
+      with_items:
+        - apache2
+        - php
+        - libapache2-mod-php
+        - php-pgsql
       register: apache_installed
 
     - name: Start Apache2 service
@@ -22,8 +27,8 @@
 
     - name: Create index.html file
       copy:
-        content: "Hello World!\n"
-        dest: /var/www/html/index.html
+        src: "index.php"
+        dest: /var/www/html/index.php
         mode: "0644"
       notify: Restart Apache
   handlers:
