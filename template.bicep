@@ -144,7 +144,7 @@ resource app 'Microsoft.Compute/virtualMachines@2023-03-01' = {
       imageReference: {
         publisher: 'Canonical'
         offer: 'UbuntuServer'
-        sku: '22.04-LTS'
+        sku: '22_04-lts-gen2'
         version: 'latest'
       }
       osDisk: {
