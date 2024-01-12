@@ -42,6 +42,9 @@ stages:
         echo "[webserver]" > ~/inventory
         echo "$(publicIP)" >> ~/inventory
       displayName: 'Install Ansible and Create Inventory File'
+    - script: 
+        cat ~/inventory
+      displayName: "Inventory file content check"
     - script: |
         ansible-playbook -i ~/inventory ansible-playbooks/postgresql-ansible.yml
         ansible-playbook -i ~/inventory ansible-playbooks/configure-webserver.yml
