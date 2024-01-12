@@ -45,7 +45,7 @@ stages:
 - stage: RunAnsible
   dependsOn: Deploy
   variables:
-    publicIP: $[stageDependencies.Deploy.DeployResources.outputs['appOutput.application_IP']]
+    publicIP: $[stageDependencies.Deploy.DeployResources.outputs['storageAccount']]
   jobs:
   - job: ExecuteAnsible
     steps:
@@ -56,6 +56,7 @@ stages:
         sudo apt-get install ansible -y
         echo "[webserver]" > ~/inventory
         echo "$(publicIP)" >> ~/inventory
+        echo "$storageAccount" >> ~/inventory
       displayName: 'Install Ansible and Create Inventory File'
     - script: 
         cat ~/inventory
