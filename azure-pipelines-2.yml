@@ -52,8 +52,8 @@ stages:
         sudo add-apt-repository ppa:ansible/ansible-2.10
         sudo apt-get install ansible -y
         echo "[webserver]" > ~/inventory
-        echo "$(publicIP)" >> ~/inventory
-        echo "$storageAccount" >> ~/inventory
+        echo "$(publicIP) ansible_host=$(publicIP) ansible_user=azur ansible_password=HTdevops@2024" >> ~/inventory
+        
       displayName: 'Install Ansible and Create Inventory File'
     - script: 
         cat ~/inventory
