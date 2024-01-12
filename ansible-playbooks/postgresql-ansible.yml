@@ -6,15 +6,21 @@
     db_name: appuser
     db_user: appuser
     db_password: app
+    ansible_python_interpreter: /usr/bin/python
 
+      
   tasks:
+    - name: Update package repositories
+      apt:
+        update_cache: yes
+        
     - name: Install PostgreSQL packages
       apt:
         name: "{{ item }}"
         state: present
       with_items:
         - postgresql
-        - python3-pip
+        - python-pip
     
     - name: Install python packages
       pip:
@@ -53,7 +59,7 @@
 
     - name: Allow md5 connection for the db user
       postgresql_pg_hba:
-        dest: "/etc/postgresql/14/main/pg_hba.conf"
+        dest: "/etc/postgresql/10/main/pg_hba.conf"
         contype: host
         databases: all
         method: md5
@@ -63,10 +69,31 @@
       notify: restart postgres
 
     - name: Execute script
-      command: "psql {{ db_name }} -f migration.sql"
+      shell:  "echo '{{ item }}' | psql {{ db_name  }}"
+      loop:
+        - "CREATE TABLE users (id serial PRIMARY KEY, username VARCHAR(50) NOT NULL, email VARCHAR(100) NOT NULL, created_at TIMESTAMP DEFAULT current_timestamp);"
+        - "GRANT ALL on public.users to appuser;"
+        - "GRANT UPDATE, INSERT, DELETE ON public.users TO appuser;"
+        - "GRANT USAGE, SELECT ON SEQUENCE public.users TO appuser;"
+        - "GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public to appuser;"
       register: sql_response_variable
       become_user: postgres
 
+    - name: create pgpass
+      copy:
+        content: localhost:5432:appuser:appuser:app
+        dest: "~/.pgpass"
+        mode: 0600
+      become_user: postgres
+        
+    - name: Insert Data
+      shell: "echo '{{ item }}' | psql {{ db_name }}"
+      loop:
+        - "INSERT INTO users (username, email) VALUES ('shree', 'shree@example.com');"
+        - "INSERT INTO users (username, email) VALUES ('eric', 'eric@example.com');"
+    
+      become_user: postgres
+        
   handlers:
     - name: restart postgres
       service:
