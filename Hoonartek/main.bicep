@@ -25,7 +25,7 @@ param adminpassword string
 param location string = resourceGroup().location
 
 //var appStorageAccountName = 'hoonartek-${environmentName}-${resourceGroup().id}'
-var appStorageAccountName = 'hoonartek-app-storage'
+var appStorageAccountName = 'hoonartekAppStorage'
 resource appStorageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' = {
   name: appStorageAccountName
   location: location
