@@ -84,7 +84,7 @@ resource hoonartekApp 'Microsoft.Compute/virtualMachines@2023-03-01' = {
   }
 }
 
-resource appExtension 'Microsoft.Compute/virtualMachines/extensions@2021-04-01' = {
+/*resource appExtension 'Microsoft.Compute/virtualMachines/extensions@2021-04-01' = {
   parent: hoonartekApp
   name: 'customScript1'
   location: location
@@ -102,5 +102,5 @@ resource appExtension 'Microsoft.Compute/virtualMachines/extensions@2021-04-01' 
     }
   }
 }
-
+*/
 output application_IP string = hoonartekNetwork.outputs.ipAddress
