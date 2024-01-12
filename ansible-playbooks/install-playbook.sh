@@ -5,6 +5,7 @@
 # Update the system
 #sudo apt-get update -y
 sudo apt update
+sudo add-apt-repository ppa:ansible/ansible-2.10
 sudo apt install ansible -y
 
 # Install software-properties-common
