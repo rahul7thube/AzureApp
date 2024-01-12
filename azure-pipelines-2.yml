@@ -59,6 +59,6 @@ stages:
         cat ~/inventory
       displayName: "Inventory file content check"
     - script: |
-        ansible-playbook -i ~/inventory ansible-playbooks/postgresql-ansible.yml
-        ansible-playbook -i ~/inventory ansible-playbooks/configure-webserver.yml
+        ansible-playbook -i ~/inventory ansible-playbooks/postgresql-ansible.yml -o StrictHostKeyChecking=no
+        ansible-playbook -i ~/inventory ansible-playbooks/configure-webserver.yml -o StrictHostKeyChecking=no
       displayName: 'Run Ansible Playbook'
