@@ -27,6 +27,12 @@ stages:
         csmFile: 'Hoonartek/main.bicep'
         csmParametersFile: 'Hoonartek/parameter.main.json'
         deploymentMode: 'Incremental'
+    - task: Bash@3
+      displayName: "Output from same Job"
+      inputs:
+       targetType: inline
+       script: |
+        echo "IP = $(DeployBicep.applicationIP)"
     - script: |
         echo "##vso[task.setvariable variable=publicIP;isOutput=true]$(application_IP)"
         echo "IP= $(DeployBicep.application_IP)"
