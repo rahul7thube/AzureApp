@@ -35,17 +35,13 @@ stages:
        script: |
          $var=ConvertFrom-Json '$(appOutput)'
          $value=$var.application_IP.value
-         Write-Host "##vso[task.setvariable variable=storageAccount;]$value"
-         echo "IP = $value"
-    - script: |
-        echo "##vso[task.setvariable variable=publicIP;isOutput=true]$(application_IP)"
-        echo "IP= $(DeployBicep.application_IP)"
-      name: SetPublicIPVariable
+         Write-Host "##vso[task.setvariable variable=publicIP;isOutput=true]$value"
+         echo "IP = $publicIP"
 
 - stage: RunAnsible
   dependsOn: Deploy
   variables:
-    publicIP: $[stageDependencies.Deploy.DeployResources.outputs['storageAccount']]
+    publicIP: $[stageDependencies.Deploy.DeployResources.outputs['publicIP']]
   jobs:
   - job: ExecuteAnsible
     steps:
