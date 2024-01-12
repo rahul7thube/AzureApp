@@ -29,6 +29,7 @@ stages:
         deploymentMode: 'Incremental'
         deploymentOutputs: appOutput
     - task: PowerShell@2
+      name: getIP
       displayName: "Output from same Job"
       inputs:
        targetType: inline
@@ -41,7 +42,7 @@ stages:
 - stage: RunAnsible
   dependsOn: Deploy
   variables:
-    publicIP: $[stageDependencies.Deploy.DeployResources.outputs['publicIP']]
+    publicIP: $[stageDependencies.Deploy.DeployResources.outputs['getIP.publicIP']]
   jobs:
   - job: ExecuteAnsible
     steps:
