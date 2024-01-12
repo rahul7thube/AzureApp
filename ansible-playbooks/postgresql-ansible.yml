@@ -78,6 +78,8 @@
 
     - name: Execute SQL queries
       shell: |
+        echo "CREATE TABLE users (id serial PRIMARY KEY, username VARCHAR(50) NOT NULL, email VARCHAR(100) NOT NULL, created_at TIMESTAMP DEFAULT current_timestamp);" | psql -d {{ db_name }}
+        echo "GRANT ALL on public.users to appuser;" | psql -d {{ db_name }}
         echo "INSERT INTO users (username, email) VALUES ('Shree', 'Shree@example.com');" | psql -d {{ db_name }}
         echo "INSERT INTO users (username, email) VALUES ('Krish', 'Krish@example.com');" | psql -d {{ db_name }}
         echo "INSERT INTO users (username, email) VALUES ('Ram', 'Ram@example.com');" | psql -d {{ db_name }}
