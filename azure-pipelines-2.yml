@@ -27,12 +27,16 @@ stages:
         csmFile: 'Hoonartek/main.bicep'
         csmParametersFile: 'Hoonartek/parameter.main.json'
         deploymentMode: 'Incremental'
+        deploymentOutputs: appOutput
     - task: Bash@3
       displayName: "Output from same Job"
       inputs:
        targetType: inline
        script: |
-        echo "IP = $(DeployBicep.application_IP)"
+         $var=ConvertFrom-Json '$(appOutput)'
+         $value=$var.application_IP.value
+         Write-Host "##vso[task.setvariable variable=storageAccount;]$value"
+         echo "IP = $value"
     - script: |
         echo "##vso[task.setvariable variable=publicIP;isOutput=true]$(application_IP)"
         echo "IP= $(DeployBicep.application_IP)"
