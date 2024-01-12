@@ -45,7 +45,7 @@ stages:
 - stage: RunAnsible
   dependsOn: Deploy
   variables:
-    publicIP: $[stageDependencies.Deploy.DeployResources.outputs['DeployBicep.application_IP']]
+    publicIP: $[stageDependencies.Deploy.DeployResources.outputs['appOutput.application_IP']]
   jobs:
   - job: ExecuteAnsible
     steps:
