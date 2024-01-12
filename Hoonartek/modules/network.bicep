@@ -86,7 +86,7 @@ resource hoonartekNetworkInterface 'Microsoft.Network/networkInterfaces@2023-04-
         properties: {
           privateIPAllocationMethod: 'Dynamic'
           publicIPAddress: {
-            id: hoonartekNetworkIP.properties.ipAddress
+            id: hoonartekNetworkIP.id
           }
           subnet: {
             id: resourceId('Microsoft.Network/virtualNetworks/subnets', 'hoonartek-vn', 'hoonartek-subnet1')
@@ -100,5 +100,5 @@ resource hoonartekNetworkInterface 'Microsoft.Network/networkInterfaces@2023-04-
     hoonartekVirtualNetwork
   ]
 }
-output networkId string = hoonartekNetworkIP.id
+output networkId string = hoonartekNetworkInterface.id
 output ipAddress string = hoonartekNetworkIP.properties.ipAddress
