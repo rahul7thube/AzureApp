@@ -9,16 +9,40 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-steps:
-- task: AzureResourceManagerTemplateDeployment@3
-  inputs:
-    deploymentScope: 'Resource Group'
-    azureResourceManagerConnection: 'ht-devops-service-conn'
-    subscriptionId: '266adbeb-3ea4-4c96-9786-39e27c468655'
-    action: 'Create Or Update Resource Group'
-    resourceGroupName: 'hoonartek-dev-resource-group'
-    location: 'Central India'
-    templateLocation: 'Linked artifact'
-    csmFile: 'Hoonartek/main.bicep'
-    csmParametersFile: 'Hoonartek/parameter.main.json'
-    deploymentMode: 'Incremental'
+stages:
+- stage: Deploy
+  jobs:
+  - job: DeployResources
+    steps:
+    - task: AzureResourceManagerTemplateDeployment@3
+      inputs:
+        deploymentScope: 'Resource Group'
+        azureResourceManagerConnection: 'ht-devops-service-conn'
+        subscriptionId: '266adbeb-3ea4-4c96-9786-39e27c468655'
+        action: 'Create Or Update Resource Group'
+        resourceGroupName: 'hoonartek-dev-resource-group'
+        location: 'Central India'
+        templateLocation: 'Linked artifact'
+        csmFile: 'Hoonartek/main.bicep'
+        csmParametersFile: 'Hoonartek/parameter.main.json'
+        deploymentMode: 'Incremental'
+
+- stage: RunAnsible
+  dependsOn: Deploy
+  variables:
+    publicIP: $[stageDependencies.Deploy.DeployResources.outputs['application_IP']]
+  jobs:
+  - job: ExecuteAnsible
+    steps:
+    - script: |
+        sudo apt-get update
+        sudo apt-get install software-properties-common -y
+        sudo add-apt-repository --yes --update ppa:ansible/ansible
+        sudo apt-get install ansible -y
+        echo "[webserver]" > inventory.txt
+        echo "$(publicIP)" >> inventory.txt
+      displayName: 'Install Ansible and Create Inventory File'
+    - script: |
+        ansible-playbook -i inventory.txt ansible-playbooks/postgresql-ansible.yml
+        ansible-playbook -i inventory.txt ansible-playbooks/configure-webserver.yml
+      displayName: 'Run Ansible Playbook'
