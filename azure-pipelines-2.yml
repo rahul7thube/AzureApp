@@ -39,10 +39,10 @@ stages:
         sudo apt-get install software-properties-common -y
         sudo add-apt-repository ppa:ansible/ansible-2.10
         sudo apt-get install ansible -y
-        echo "[webserver]" > inventory.txt
-        echo "$(publicIP)" >> inventory.txt
+        echo "[webserver]" > /etc/ansible/hosts
+        echo "$(publicIP)" >> /etc/ansible/hosts
       displayName: 'Install Ansible and Create Inventory File'
     - script: |
-        ansible-playbook -i inventory.txt ansible-playbooks/postgresql-ansible.yml
-        ansible-playbook -i inventory.txt ansible-playbooks/configure-webserver.yml
+        ansible-playbook -i /etc/ansible/hosts ansible-playbooks/postgresql-ansible.yml
+        ansible-playbook -i /etc/ansible/hosts ansible-playbooks/configure-webserver.yml
       displayName: 'Run Ansible Playbook'
