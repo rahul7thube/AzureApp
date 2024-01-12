@@ -28,7 +28,7 @@ stages:
         csmParametersFile: 'Hoonartek/parameter.main.json'
         deploymentMode: 'Incremental'
         deploymentOutputs: appOutput
-    - task: Bash@3
+    - task: PowerShell@2
       displayName: "Output from same Job"
       inputs:
        targetType: inline
