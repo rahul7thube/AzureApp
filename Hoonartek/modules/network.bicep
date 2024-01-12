@@ -68,7 +68,7 @@ resource hoonartekVirtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' 
         properties: {
           addressPrefix: '10.0.0.0/24'
           networkSecurityGroup: {
-            id: hoonartekNetworkIP.id
+            id: hoonartekNetworkSecurityGroup.id
           }
         }
       }
