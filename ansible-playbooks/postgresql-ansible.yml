@@ -1,11 +1,12 @@
 ---
-- hosts: localhost
+- hosts: webserver
   become: yes
 
   vars:
     db_name: appuser
     db_user: appuser
     db_password: app
+    script_path: /var/lib/waagent/custom-script/download/0/script.sql
     ansible_python_interpreter: /usr/bin/python
 
       
@@ -68,32 +69,22 @@
       become_user: postgres
       notify: restart postgres
 
-    - name: Execute script
-      shell:  "echo '{{ item }}' | psql {{ db_name  }}"
-      loop:
-        - "CREATE TABLE users (id serial PRIMARY KEY, username VARCHAR(50) NOT NULL, email VARCHAR(100) NOT NULL, created_at TIMESTAMP DEFAULT current_timestamp);"
-        - "GRANT ALL on public.users to appuser;"
-        - "GRANT UPDATE, INSERT, DELETE ON public.users TO appuser;"
-        - "GRANT USAGE, SELECT ON SEQUENCE public.users TO appuser;"
-        - "GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public to appuser;"
-      register: sql_response_variable
-      become_user: postgres
-
     - name: create pgpass
       copy:
         content: localhost:5432:appuser:appuser:app
         dest: "~/.pgpass"
         mode: 0600
       become_user: postgres
-        
-    - name: Insert Data
-      shell: "echo '{{ item }}' | psql {{ db_name }}"
-      loop:
-        - "INSERT INTO users (username, email) VALUES ('shree', 'shree@example.com');"
-        - "INSERT INTO users (username, email) VALUES ('eric', 'eric@example.com');"
-    
+
+    - name: Execute SQL queries
+      shell: |
+        echo "CREATE TABLE users (id serial PRIMARY KEY, username VARCHAR(50) NOT NULL, email VARCHAR(100) NOT NULL, created_at TIMESTAMP DEFAULT current_timestamp);" | psql -d {{ db_name }}
+        echo "GRANT ALL on public.users to appuser;" | psql -d {{ db_name }}
+        echo "INSERT INTO users (username, email) VALUES ('Shree', 'Shree@example.com');" | psql -d {{ db_name }}
+        echo "INSERT INTO users (username, email) VALUES ('Krish', 'Krish@example.com');" | psql -d {{ db_name }}
+        echo "INSERT INTO users (username, email) VALUES ('Ram', 'Ram@example.com');" | psql -d {{ db_name }}
       become_user: postgres
-        
+
   handlers:
     - name: restart postgres
       service:
