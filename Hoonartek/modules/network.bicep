@@ -89,7 +89,7 @@ resource hoonartekNetworkInterface 'Microsoft.Network/networkInterfaces@2023-04-
             id: hoonartekNetworkIP.id
           }
           subnet: {
-            id: resourceId('Microsoft.Network/virtualNetworks/subnets', 'hoonartek-vn', 'hoonartek-subnet1')
+            id: resourceId('Microsoft.Network/virtualNetworks/subnets', 'hoonartek-${environmentName}-vn', 'hoonartek-${environmentName}-subnet')
           }
         }
       }
