@@ -19,9 +19,9 @@ stages:
       inputs:
         deploymentScope: 'Resource Group'
         azureResourceManagerConnection: 'hoonartek-devops-servicce-connection'
-        subscriptionId: '266adbeb-3ea4-4c96-9786-39e27c468655'
+        subscriptionId: 'b7c2a37f-9419-49d2-b35b-388993d1b848'
         action: 'Create Or Update Resource Group'
-        resourceGroupName: 'hoonartek-dev-resource-group'
+        resourceGroupName: 'Hoonartek-devops-2024'
         location: 'Central India'
         templateLocation: 'Linked artifact'
         csmFile: 'Hoonartek/main.bicep'
