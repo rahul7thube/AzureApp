@@ -18,7 +18,7 @@ stages:
       name: DeployBicep
       inputs:
         deploymentScope: 'Resource Group'
-        azureResourceManagerConnection: 'hoonartek-devops-servicce-connection'
+        azureResourceManagerConnection: 'ht-devops-2024'
         subscriptionId: '4287cc25-cef3-446c-9613-f609117c950f'
         action: 'Create Or Update Resource Group'
         resourceGroupName: 'Hoonartek-DevOps-2024'
