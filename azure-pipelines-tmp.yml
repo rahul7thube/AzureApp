@@ -17,17 +17,17 @@ stages:
     - task: AzureResourceManagerTemplateDeployment@3
       name: DeployBicep
       inputs:
-        deploymentScope: 'Resource Group'
-        azureResourceManagerConnection: 'ht-devops-2024'
-        subscriptionId: '4287cc25-cef3-446c-9613-f609117c950f'
-        action: 'Create Or Update Resource Group'
-        resourceGroupName: 'Hoonartek-DevOps-2024'
-        location: 'Central India'
-        templateLocation: 'Linked artifact'
-        csmFile: 'Hoonartek/main.bicep'
-        csmParametersFile: 'Hoonartek/parameter.main.json'
-        deploymentMode: 'Incremental'
-        deploymentOutputs: appOutput
+       deploymentScope: 'Resource Group'
+       azureResourceManagerConnection: 'ht-devops-2024'
+       subscriptionId: '4287cc25-cef3-446c-9613-f609117c950f'
+       action: 'Create Or Update Resource Group'
+       resourceGroupName: 'Hoonartek-DevOps-2024'
+       location: 'Central India'
+       templateLocation: 'Linked artifact'
+       csmFile: 'Hoonartek/main.bicep'
+       csmParametersFile: 'Hoonartek/parameter.main.json'
+       deploymentMode: 'Incremental'
+       deploymentOutputs: 'appOutput'
     - task: PowerShell@2
       name: getIP
       displayName: "Resolving Public IP"
