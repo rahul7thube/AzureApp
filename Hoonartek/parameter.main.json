@@ -16,7 +16,7 @@
         "keyVault": {
           "id": "/subscriptions/4287cc25-cef3-446c-9613-f609117c950f/resourceGroups/MarketPlace-demo/providers/Microsoft.KeyVault/vaults/Hoonartek-DevOps"
         },
-        "secretName": "ht-devops"
+        "secretName": "HT-DevOps"
       }
     }
   }
