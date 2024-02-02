@@ -24,8 +24,8 @@ stages:
        resourceGroupName: 'HT-Devops'
        location: 'Central India'
        templateLocation: 'Linked artifact'
-       csmFile: 'Hoonartek/main.bicep'
-       csmParametersFile: 'Hoonartek/parameter.main.json'
+       csmFile: 'azure-templates/main.bicep'
+       csmParametersFile: 'azure-templates/parameter.main.json'
        deploymentMode: 'Incremental'
        deploymentOutputs: 'appOutput'
     - task: PowerShell@2
