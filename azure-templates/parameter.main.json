@@ -14,7 +14,7 @@
     "adminpassword": {
       "reference": {
         "keyVault": {
-          "id": "/subscriptions/4287cc25-cef3-446c-9613-f609117c950f/resourceGroups/HT-Devops/providers/Microsoft.KeyVault/vaults/HT123"
+          "id": "/subscriptions/4287cc25-cef3-446c-9613-f609117c950f/resourceGroups/HT-Devops/providers/Microsoft.KeyVault/vaults/HT1234"
         },
         "secretName": "HT-DevOps"
       }
