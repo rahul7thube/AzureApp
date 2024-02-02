@@ -14,9 +14,9 @@
     "adminpassword": {
       "reference": {
         "keyVault": {
-          "id": "/subscriptions/4287cc25-cef3-446c-9613-f609117c950f/resourceGroups/HT-Devops/providers/Microsoft.KeyVault/vaults/HT12345"
+          "id": "/subscriptions/4287cc25-cef3-446c-9613-f609117c950f/resourceGroups/Hoonartek-DevOps-2024/providers/Microsoft.KeyVault/vaults/ht-devops"
         },
-        "secretName": "HT-DevOps"
+        "secretName": "ht-devops"
       }
     }
   }
