@@ -1,0 +1,97 @@
+---
+- name: Install and configure Tomcat
+  hosts: webserver
+  become: yes
+
+  vars:
+    tomcat_version: "10.1.18"
+    tomcat_install_dir: "/opt"
+    tomcat_user: "tomcat"
+    tomcat_service_name: "tomcat"
+    java_package_name: "default-jdk"
+    manager_username: "admin"
+    manager_password: "admin"
+
+  tasks:
+    - name: Install Java
+      package:
+        name: "{{ java_package_name }}"
+        state: present 
+
+    - name: Download and extract Tomcat
+      get_url:
+        url: "https://dlcdn.apache.org/tomcat/tomcat-10/v{{ tomcat_version }}/bin/apache-tomcat-{{ tomcat_version }}.tar.gz"
+        dest: "{{ tomcat_install_dir }}/"
+        validate_certs: no
+
+    - name: Check if Tomcat is already extracted
+      stat:
+        path: "{{ tomcat_install_dir }}/apache-tomcat-{{ tomcat_version }}"
+      register: tomcat_extracted
+
+    - name: Extract Tomcat tarball
+      unarchive:
+        src: "/opt/apache-tomcat-{{ tomcat_version }}.tar.gz"
+        dest: "{{ tomcat_install_dir }}/"
+        remote_src: yes
+      when: not tomcat_extracted.stat.exists
+
+    - name: Create Tomcat user
+      user:
+        name: "{{ tomcat_user }}"
+        system: yes
+        shell: /bin/false
+
+    - name: Set ownership of Tomcat directory
+      file:
+        path: "{{ tomcat_install_dir }}/apache-tomcat-{{ tomcat_version }}"
+        owner: "{{ tomcat_user }}"
+        group: "{{ tomcat_user }}"
+        recurse: yes
+
+    - name: Configure Tomcat Users
+      blockinfile:
+        path: "{{ tomcat_install_dir }}/apache-tomcat-{{ tomcat_version }}/conf/tomcat-users.xml"
+        marker: "<!-- {mark} ANSIBLE MANAGED BLOCK-->"
+        block: |
+          <role rolename="manager-gui"/>
+          <role rolename="manager-script"/>
+          <role rolename="manager-jmx"/>
+          <role rolename="manager-status"/>
+          <role rolename="admin-gui"/>
+          <role rolename="admin-scritp"/>
+          <user username="{{ manager_username }}" password="{{ manager_password }}" roles="manager-gui,manager-script,manager-jmx,manager-status, admin-gui,admin-script"/>
+        insertbefore: </tomcat-users>
+      notify:
+        - Start Tomcat
+
+    - name: Comment out RemoteAddrValve in context.xml
+      replace:
+        path: "{{ item }}"
+        regexp: '(<Valve className="org.apache.catalina.valves.RemoteAddrValve"\s+allow=".+?"\s*/>)'
+        replace: '<!-- \1 -->'
+      loop:
+        - "/opt/apache-tomcat-10.1.18/webapps/manager/META-INF/context.xml"
+        - "/opt/apache-tomcat-10.1.18/webapps/host-manager/META-INF/context.xml"
+      notify:
+        - Restart Tomcat
+
+    - name: Configure systemd service for Tomcat
+      template:
+        src: tomcat.service.j2
+        dest: "/etc/systemd/system/{{ tomcat_service_name }}.service"
+      notify:
+        - Reload systemd
+
+  handlers:
+    - name: Restart Tomcat
+      shell:
+        cmd: "{{ tomcat_install_dir }}/apache-tomcat-{{ tomcat_version }}/bin/shutdown.sh && sleep 5 && {{ tomcat_install_dir }}/apache-tomcat-{{ tomcat_version }}/bin/startup.sh"
+
+    - name: Start Tomcat
+      shell:
+        cmd: "{{ tomcat_install_dir }}/apache-tomcat-{{ tomcat_version }}/bin/startup.sh"
+
+    - name: Reload systemd
+      systemd:
+        daemon_reload: yes
