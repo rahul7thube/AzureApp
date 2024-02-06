@@ -48,6 +48,20 @@ resource hoonartekNetworkSecurityGroup 'Microsoft.Network/networkSecurityGroups@
           direction: 'Inbound'
         }
       }
+      {
+        name: 'tomcat'
+        properties: {
+          description: 'Allow HTTP Access'
+          protocol: 'Tcp'
+          sourcePortRange: '*'
+          destinationPortRanges: '8080'
+          sourceAddressPrefix: '*'
+          destinationAddressPrefix: '*'
+          access: 'Allow'
+          priority: 102
+          direction: 'Inbound'
+        }
+      }
     ]
   }
 }
