@@ -54,7 +54,7 @@ resource hoonartekNetworkSecurityGroup 'Microsoft.Network/networkSecurityGroups@
           description: 'Allow HTTP Access'
           protocol: 'Tcp'
           sourcePortRange: '*'
-          destinationPortRanges: '8080'
+          destinationPortRange: '8080'
           sourceAddressPrefix: '*'
           destinationAddressPrefix: '*'
           access: 'Allow'
