@@ -11,6 +11,7 @@
     java_package_name: "default-jdk"
     manager_username: "admin"
     manager_password: "admin"
+    war_file_url: "https://github.com/rahul7thube/AzureApp/raw/Rushi-Bicep/my-web-app.war"
 
   tasks:
     - name: Install Java
@@ -75,6 +76,12 @@
         - "/opt/apache-tomcat-10.1.18/webapps/host-manager/META-INF/context.xml"
       notify:
         - Restart Tomcat
+        
+    - name: Download WAR file
+      get_url:
+        url: "{{ war_file_url }}"
+        dest: "{{ tomcat_install_dir }}/apache-tomcat-{{ tomcat_version }}/webapps/"
+        validate_certs: no
 
     - name: Configure systemd service for Tomcat
       template:
