@@ -1,0 +1,64 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- Rushi-Bicep
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages:
+- stage: Deploy
+  jobs:
+  - job: DeployResources
+    steps:
+    - task: AzureResourceManagerTemplateDeployment@3
+      name: DeployBicep
+      inputs:
+       deploymentScope: 'Resource Group'
+       azureResourceManagerConnection: 'ht-devops-2024'
+       subscriptionId: '4287cc25-cef3-446c-9613-f609117c950f'
+       action: 'Create Or Update Resource Group'
+       resourceGroupName: 'HT-Devops'
+       location: 'Central India'
+       templateLocation: 'Linked artifact'
+       csmFile: 'azure-templates/main.bicep'
+       csmParametersFile: 'azure-templates/parameter.main.json'
+       deploymentMode: 'Incremental'
+       deploymentOutputs: 'appOutput'
+    - task: PowerShell@2
+      name: getIP
+      displayName: "Resolving Public IP"
+      inputs:
+       targetType: inline
+       script: |
+         $var=ConvertFrom-Json '$(appOutput)'
+         $value=$var.application_IP.value
+         Write-Host "##vso[task.setvariable variable=publicIP;isOutput=true]$value"
+         echo "IP = $value"
+
+- stage: RunAnsible
+  dependsOn: Deploy
+  variables:
+    publicIP: $[stageDependencies.Deploy.DeployResources.outputs['getIP.publicIP']]
+  jobs:
+  - job: ExecuteAnsible
+    steps:
+    - script: |
+        sudo apt-get update
+        sudo apt-get install software-properties-common -y
+        sudo add-apt-repository ppa:ansible/ansible-2.10
+        sudo apt-get install ansible -y
+        echo "[webserver]" > ~/inventory
+        echo "$(publicIP) ansible_host=$(publicIP) ansible_user=azure ansible_password=ht-devops@2024" >> ~/inventory
+        
+      displayName: 'Install Ansible and Create Inventory File'
+    - script: 
+        cat ~/inventory
+      displayName: "Inventory file content check"
+    - script: |
+        export ANSIBLE_HOST_KEY_CHECKING=False
+        ansible-playbook -i ~/inventory ansible-playbooks/tomcat-ansible.yaml
+      displayName: 'Run Ansible Playbook'
