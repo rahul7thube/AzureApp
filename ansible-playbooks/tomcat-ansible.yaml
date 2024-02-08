@@ -83,13 +83,6 @@
         dest: "{{ tomcat_install_dir }}/apache-tomcat-{{ tomcat_version }}/webapps/"
         validate_certs: no
 
-    - name: Configure systemd service for Tomcat
-      template:
-        src: tomcat.service.j2
-        dest: "/etc/systemd/system/{{ tomcat_service_name }}.service"
-      notify:
-        - Reload systemd
-
   handlers:
     - name: Restart Tomcat
       shell:
@@ -99,6 +92,3 @@
       shell:
         cmd: "{{ tomcat_install_dir }}/apache-tomcat-{{ tomcat_version }}/bin/startup.sh"
 
-    - name: Reload systemd
-      systemd:
-        daemon_reload: yes
