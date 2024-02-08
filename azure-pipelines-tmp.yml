@@ -62,5 +62,4 @@ stages:
         export ANSIBLE_HOST_KEY_CHECKING=False
         ansible-playbook -i ~/inventory ansible-playbooks/postgresql-ansible.yml 
         ansible-playbook -i ~/inventory ansible-playbooks/configure-webserver.yml
-        ansible-playbook -i ~/inventory ansible-playbooks/tomcat-ansible.yaml
       displayName: 'Run Ansible Playbook'
