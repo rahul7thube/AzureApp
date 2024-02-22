@@ -10,7 +10,7 @@
     name: name of image
     source: vm name
     os_type: Linux
-    capture_name_prefix: v1.0
+    capture_name_prefix: webserver
     state: present  
     gallery: true
     gallery_name: gallery name
