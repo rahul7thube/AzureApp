@@ -1,0 +1,18 @@
+- name: Shutdown the VM
+  azure.azcollection.azure_rm_virtualmachine:
+    resource_group: resource grp name 
+    name: vm name
+    state: stopped
+
+- name: Capture VM image
+  azure.azcollection.azure_rm_image:
+    resource_group: resource grp name
+    name: name of image
+    source: vm name
+    os_type: Linux
+    capture_name_prefix: v1.0
+    state: present  
+    gallery: true
+    gallery_name: gallery name
+    gallery_image_name: image name
+    gallery_image_version: '1.0.0'
